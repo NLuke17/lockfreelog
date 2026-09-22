@@ -1,0 +1,25 @@
+# compiled benchmark/tier binaries
+project/t1
+project/t2
+project/t3
+project/t4
+project/t5
+project/t5libs
+project/t5micro
+project/t6
+lessons/L1
+lessons/L2
+lessons/L2b
+lessons/L3
+lessons/L6
+
+# macOS
+.DS_Store
+
+# editor
+*.o
+*.out
+a.out
+
+# personal interview-prep notes (keep local, not public)
+project/INTERVIEW_PREP.md
