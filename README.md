@@ -91,9 +91,21 @@ happens-before*). That one handoff is the entire lock-free design.
 
 ---
 
-## Benchmarks (Apple M3, `-O2`)
+## Benchmarks
 
-**Throughput** — every logger formats and emits the same line to `/dev/null` (5M messages):
+**Throughput scales with the hardware** — measured on two platforms:
+
+| Platform | this engine | notes |
+|---|---:|---|
+| **Intel Xeon Gold 6348** (Ice Lake, x86, Linux) | **~50M msgs/sec** | server-class core, 64-byte cache line |
+| **Apple M3** (ARM, macOS) | **~28M msgs/sec** | laptop, 128-byte cache line, weakly ordered |
+
+The gap is expected: the x86 server has higher single-core throughput and a stronger (TSO)
+memory model, so the acquire/release handoff is cheaper. `alignas(128)` is a portable choice —
+it fully separates the indices on both (on x86 it simply over-aligns past the 64-byte line).
+
+**Detail (Apple M3, `-O2`)** — every logger formats and emits the same line to `/dev/null`
+(5M messages):
 
 | Logger | msgs/sec | |
 |---|---:|---|
